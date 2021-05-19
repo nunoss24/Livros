@@ -1,5 +1,6 @@
 package pt.ipg.livros
 
+import android.provider.BaseColumns
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
@@ -19,6 +20,13 @@ class TestesBaseDados {
     private fun getAppContext() = InstrumentationRegistry.getInstrumentation().targetContext
     private fun getBdLivrosOpenHelper() = BdLivrosOpenHelper(getAppContext())
 
+    private fun insereCategoria(tabela: TabelaCategorias, categoria: Categoria): Long {
+        val id = tabela.insert(categoria.toContentValues())
+        assertNotEquals(-1, id)
+
+        return id
+    }
+
     @Before
     fun apagaBaseDados() {
         getAppContext().deleteDatabase(BdLivrosOpenHelper.NOME_BASE_DADOS)
@@ -36,9 +44,29 @@ class TestesBaseDados {
         val db = getBdLivrosOpenHelper().writableDatabase
         val tabelaCategorias = TabelaCategorias(db)
 
-        val id = tabelaCategorias.insert(Categoria(nome = "Drama").toContentValues())
+        val categoria = Categoria(nome = "Drama")
+        categoria.id = insereCategoria(tabelaCategorias, categoria)
 
-        assertNotEquals(-1, id)
+        db.close()
+    }
+
+    @Test
+    fun consegueAlterarCategorias() {
+        val db = getBdLivrosOpenHelper().writableDatabase
+        val tabelaCategorias = TabelaCategorias(db)
+
+        val categoria = Categoria(nome = "sci")
+        categoria.id = insereCategoria(tabelaCategorias, categoria)
+
+        categoria.nome = "Ficção científica"
+
+        val registosAlterados = tabelaCategorias.update(
+            categoria.toContentValues(),
+            "${BaseColumns._ID}=?",
+            arrayOf(categoria.id.toString())
+        )
+
+        assertEquals(1, registosAlterados)
 
         db.close()
     }
