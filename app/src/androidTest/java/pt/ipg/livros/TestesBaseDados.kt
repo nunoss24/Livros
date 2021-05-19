@@ -70,4 +70,22 @@ class TestesBaseDados {
 
         db.close()
     }
+
+    @Test
+    fun consegueEliminarCategorias() {
+        val db = getBdLivrosOpenHelper().writableDatabase
+        val tabelaCategorias = TabelaCategorias(db)
+
+        val categoria = Categoria(nome = "teste")
+        categoria.id = insereCategoria(tabelaCategorias, categoria)
+
+        val registosEliminados = tabelaCategorias.delete(
+            "${BaseColumns._ID}=?",
+            arrayOf(categoria.id.toString())
+        )
+
+        assertEquals(1, registosEliminados)
+
+        db.close()
+    }
 }
