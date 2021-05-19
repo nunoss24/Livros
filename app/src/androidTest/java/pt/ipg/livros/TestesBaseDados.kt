@@ -27,6 +27,20 @@ class TestesBaseDados {
         return id
     }
 
+    private fun getCategoriaBaseDados(tabela: TabelaCategorias, id: Long): Categoria {
+        val cursor = tabela.query(
+            TabelaCategorias.TODAS_COLUNAS,
+            "${BaseColumns._ID}=?",
+            arrayOf(id.toString()),
+            null, null, null
+        )
+
+        assertNotNull(cursor)
+        assert(cursor!!.moveToNext())
+
+        return Categoria.fromCursor(cursor)
+    }
+
     @Before
     fun apagaBaseDados() {
         getAppContext().deleteDatabase(BdLivrosOpenHelper.NOME_BASE_DADOS)
@@ -46,6 +60,8 @@ class TestesBaseDados {
 
         val categoria = Categoria(nome = "Drama")
         categoria.id = insereCategoria(tabelaCategorias, categoria)
+
+        assertEquals(categoria, getCategoriaBaseDados(tabelaCategorias, categoria.id))
 
         db.close()
     }
@@ -68,6 +84,8 @@ class TestesBaseDados {
 
         assertEquals(1, registosAlterados)
 
+        assertEquals(categoria, getCategoriaBaseDados(tabelaCategorias, categoria.id))
+
         db.close()
     }
 
@@ -85,6 +103,19 @@ class TestesBaseDados {
         )
 
         assertEquals(1, registosEliminados)
+
+        db.close()
+    }
+
+    @Test
+    fun consegueLerCategorias() {
+        val db = getBdLivrosOpenHelper().writableDatabase
+        val tabelaCategorias = TabelaCategorias(db)
+
+        val categoria = Categoria(nome = "Aventura")
+        categoria.id = insereCategoria(tabelaCategorias, categoria)
+
+        assertEquals(categoria, getCategoriaBaseDados(tabelaCategorias, categoria.id))
 
         db.close()
     }
