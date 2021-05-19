@@ -9,15 +9,7 @@ class TabelaLivros(db: SQLiteDatabase) {
     private val db: SQLiteDatabase = db
 
     fun cria() {
-        db.execSQL(
-            "CREATE TABLE " + NOME_TABELA + "(" +
-                BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                CAMPO_TITULO + " TEXT NOT NULL, " +
-                CAMPO_AUTOR + " TEXT NOT NULL, " +
-                CAMPO_ID_CATEGORIA + " INTEGER NOT NULL, " +
-                "FOREIGN KEY(" + CAMPO_ID_CATEGORIA + ") " +
-                    "REFERENCES " + TabelaCategorias.NOME_TABELA  +
-                ")")
+        db.execSQL("CREATE TABLE $NOME_TABELA (${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, $CAMPO_TITULO TEXT NOT NULL, $CAMPO_AUTOR TEXT NOT NULL, $CAMPO_ID_CATEGORIA INTEGER NOT NULL, FOREIGN KEY($CAMPO_ID_CATEGORIA) REFERENCES ${TabelaCategorias.NOME_TABELA})")
     }
 
     fun insert(values: ContentValues): Long {
