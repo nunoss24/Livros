@@ -36,7 +36,9 @@ class TestesBaseDados {
         val db = getBdLivrosOpenHelper().writableDatabase
         val tabelaCategorias = TabelaCategorias(db)
 
-        tabelaCategorias.insert(Categoria(nome = "Drama"))
+        val id = tabelaCategorias.insert(Categoria(nome = "Drama").toContentValues())
+
+        assertNotEquals(-1, id)
 
         db.close()
     }
