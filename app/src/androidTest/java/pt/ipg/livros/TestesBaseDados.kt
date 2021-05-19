@@ -17,6 +17,7 @@ import org.junit.Before
 @RunWith(AndroidJUnit4::class)
 class TestesBaseDados {
     private fun getAppContext() = InstrumentationRegistry.getInstrumentation().targetContext
+    private fun getBdLivrosOpenHelper() = BdLivrosOpenHelper(getAppContext())
 
     @Before
     fun apagaBaseDados() {
@@ -25,9 +26,18 @@ class TestesBaseDados {
 
     @Test
     fun consegueAbrirBaseDados() {
-        val openHelper = BdLivrosOpenHelper(getAppContext())
-        val db = openHelper.readableDatabase
+        val db = getBdLivrosOpenHelper().readableDatabase
         assert(db.isOpen)
+        db.close()
+    }
+
+    @Test
+    fun consegueInserirCategorias() {
+        val db = getBdLivrosOpenHelper().writableDatabase
+        val tabelaCategorias = TabelaCategorias(db)
+
+        tabelaCategorias.insert(Categoria(nome = "Drama"))
+
         db.close()
     }
 }
