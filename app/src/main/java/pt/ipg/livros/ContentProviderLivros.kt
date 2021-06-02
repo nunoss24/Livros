@@ -6,6 +6,8 @@ import android.database.Cursor
 import android.net.Uri
 
 class ContentProviderLivros : ContentProvider() {
+    private var bdLivrosOpenHelper : BdLivrosOpenHelper? = null
+
     /**
      * Implement this to initialize your content provider on startup.
      * This method is called for all registered content providers on the
@@ -34,7 +36,9 @@ class ContentProviderLivros : ContentProvider() {
      * @return true if the provider was successfully loaded, false otherwise
      */
     override fun onCreate(): Boolean {
-        TODO("Not yet implemented")
+        bdLivrosOpenHelper = BdLivrosOpenHelper(context)
+
+        return true
     }
 
     /**
