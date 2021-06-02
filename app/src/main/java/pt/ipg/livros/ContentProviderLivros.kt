@@ -139,7 +139,6 @@ class ContentProviderLivros : ContentProvider() {
      * @return a MIME type string, or `null` if there is no type.
      */
     override fun getType(uri: Uri): String? {
-        TODO("Not yet implemented")
     }
 
     /**
@@ -215,13 +214,19 @@ class ContentProviderLivros : ContentProvider() {
         private const val LIVROS = "livros"
         private const val CATEGORIAS = "categorias"
 
+        private const val URI_LIVROS = 100
+        private const val URI_LIVRO_ESPECIFICO = 101
+        private const val URI_CATEGORIAS = 200
+        private const val URI_CATEGORIA_ESPECIFICA = 201
+
+
         private fun getUriMatcher() : UriMatcher {
             val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
-            uriMatcher.addURI(AUTHORITY, LIVROS, 100)
-            uriMatcher.addURI(AUTHORITY, "$LIVROS/#", 101)
-            uriMatcher.addURI(AUTHORITY, CATEGORIAS, 200)
-            uriMatcher.addURI(AUTHORITY, "$CATEGORIAS/#", 201)
+            uriMatcher.addURI(AUTHORITY, LIVROS, URI_LIVROS)
+            uriMatcher.addURI(AUTHORITY, "$LIVROS/#", URI_LIVRO_ESPECIFICO)
+            uriMatcher.addURI(AUTHORITY, CATEGORIAS, URI_CATEGORIAS)
+            uriMatcher.addURI(AUTHORITY, "$CATEGORIAS/#", URI_CATEGORIA_ESPECIFICA)
 
             return uriMatcher
         }
