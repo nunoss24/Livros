@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
+import android.provider.BaseColumns
 import kotlin.math.E
 
 class ContentProviderLivros : ContentProvider() {
@@ -117,7 +118,47 @@ class ContentProviderLivros : ContentProvider() {
         selectionArgs: Array<out String>?,
         sortOrder: String?
     ): Cursor? {
-        TODO("Not yet implemented")
+        val bd = bdLivrosOpenHelper!!.readableDatabase
+
+        return when (getUriMatcher().match(uri)) {
+            URI_LIVROS -> TabelaLivros(bd).query(
+                projection as Array<String>,
+                selection,
+                selectionArgs as Array<String>?,
+                null,
+                null,
+                sortOrder
+            )
+
+            URI_LIVRO_ESPECIFICO -> TabelaLivros(bd).query(
+                projection as Array<String>,
+                "${BaseColumns._ID}=?",
+                arrayOf(uri.lastPathSegment!!),
+                null,
+                null,
+                null
+            )
+
+            URI_CATEGORIAS -> TabelaCategorias(bd).query(
+                projection as Array<String>,
+                selection,
+                selectionArgs as Array<String>?,
+                null,
+                null,
+                sortOrder
+            )
+
+            URI_CATEGORIA_ESPECIFICA -> TabelaCategorias(bd).query(
+                projection as Array<String>,
+                "${BaseColumns._ID}=?",
+                arrayOf(uri.lastPathSegment!!),
+                null,
+                null,
+                null
+            )
+
+            else -> null
+        }
     }
 
     /**
