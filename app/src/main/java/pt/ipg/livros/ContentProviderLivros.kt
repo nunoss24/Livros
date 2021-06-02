@@ -2,6 +2,7 @@ package pt.ipg.livros
 
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 
@@ -206,5 +207,23 @@ class ContentProviderLivros : ContentProvider() {
         selectionArgs: Array<out String>?
     ): Int {
         TODO("Not yet implemented")
+    }
+
+    companion object {
+        private const val AUTHORITY = "pt.ipg.livros"
+
+        private const val LIVROS = "livros"
+        private const val CATEGORIAS = "categorias"
+
+        private fun getUriMatcher() : UriMatcher {
+            val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
+
+            uriMatcher.addURI(AUTHORITY, LIVROS, 100)
+            uriMatcher.addURI(AUTHORITY, "$LIVROS/#", 101)
+            uriMatcher.addURI(AUTHORITY, CATEGORIAS, 200)
+            uriMatcher.addURI(AUTHORITY, "$CATEGORIAS/#", 201)
+
+            return uriMatcher
+        }
     }
 }
