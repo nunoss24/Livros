@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
+import kotlin.math.E
 
 class ContentProviderLivros : ContentProvider() {
     private var bdLivrosOpenHelper : BdLivrosOpenHelper? = null
@@ -139,7 +140,15 @@ class ContentProviderLivros : ContentProvider() {
      * @return a MIME type string, or `null` if there is no type.
      */
     override fun getType(uri: Uri): String? {
+        return when (getUriMatcher().match(uri)) {
+            URI_LIVROS -> "$MULTIPLOS_ITEMS/$LIVROS"
+            URI_LIVRO_ESPECIFICO -> "$UNICO_ITEM/$LIVROS"
+            URI_CATEGORIAS -> "$MULTIPLOS_ITEMS/$CATEGORIAS"
+            URI_CATEGORIA_ESPECIFICA -> "$UNICO_ITEM/$CATEGORIAS"
+            else -> null
+        }
     }
+
 
     /**
      * Implement this to handle requests to insert a new row. As a courtesy,
@@ -219,6 +228,8 @@ class ContentProviderLivros : ContentProvider() {
         private const val URI_CATEGORIAS = 200
         private const val URI_CATEGORIA_ESPECIFICA = 201
 
+        private const val MULTIPLOS_ITEMS = "vnd.android.cursor.dir"
+        private const val UNICO_ITEM = "vnd.android.cursor.item"
 
         private fun getUriMatcher() : UriMatcher {
             val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
