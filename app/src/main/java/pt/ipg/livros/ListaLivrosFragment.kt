@@ -10,6 +10,7 @@ import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pt.ipg.livros.databinding.FragmentListaLivrosBinding
 
@@ -19,6 +20,7 @@ import pt.ipg.livros.databinding.FragmentListaLivrosBinding
 class ListaLivrosFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private var _binding: FragmentListaLivrosBinding? = null
+    private var adapterLivros : AdapterLivros? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,7 +40,9 @@ class ListaLivrosFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerViewLivros = view.findViewById<RecyclerView>(R.id.recyclerViewLivros)
-        //recyclerViewLivros.adapter
+        adapterLivros = AdapterLivros()
+        recyclerViewLivros.adapter = adapterLivros
+        recyclerViewLivros.layoutManager = LinearLayoutManager(requireContext())
 
         LoaderManager.getInstance(this)
             .initLoader(ID_LOADER_MANAGER_LIVROS, null, this)
