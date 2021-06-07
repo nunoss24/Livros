@@ -3,11 +3,18 @@ package pt.ipg.livros
 import android.database.Cursor
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class AdapterLivros(val fragment: ListaLivrosFragment, var cursor: Cursor? = null) : RecyclerView.Adapter<AdapterLivros.ViewHolderLivro>() {
     class ViewHolderLivro(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textViewTitulo = itemView.findViewById<TextView>(R.id.textViewTitulo)
+        private val textViewAutor = itemView.findViewById<TextView>(R.id.textViewAutor)
 
+        fun atualizaLivro(livro: Livro) {
+            textViewTitulo.text = livro.titulo
+            textViewAutor.text = livro.autor
+        }
     }
 
     /**
@@ -61,7 +68,8 @@ class AdapterLivros(val fragment: ListaLivrosFragment, var cursor: Cursor? = nul
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: ViewHolderLivro, position: Int) {
-        TODO("Not yet implemented")
+        cursor!!.moveToPosition(position)
+        holder.atualizaLivro(Livro.fromCursor(cursor!!))
     }
 
     /**
