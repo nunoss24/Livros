@@ -6,7 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class AdapterLivros(val fragment: ListaLivrosFragment, var cursor: Cursor? = null) : RecyclerView.Adapter<AdapterLivros.ViewHolderLivro>() {
+class AdapterLivros(val fragment: ListaLivrosFragment) : RecyclerView.Adapter<AdapterLivros.ViewHolderLivro>() {
+    public var cursor: Cursor? = null
+        get() = field
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     class ViewHolderLivro(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textViewTitulo = itemView.findViewById<TextView>(R.id.textViewTitulo)
         private val textViewAutor = itemView.findViewById<TextView>(R.id.textViewAutor)
