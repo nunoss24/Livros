@@ -37,7 +37,7 @@ class TestesBaseDados {
     private fun getCategoriaBaseDados(tabela: TabelaCategorias, id: Long): Categoria {
         val cursor = tabela.query(
             TabelaCategorias.TODAS_COLUNAS,
-            "${BaseColumns._ID}=?",
+            "${TabelaCategorias.NOME_TABELA}.${BaseColumns._ID}=?",
             arrayOf(id.toString()),
             null, null, null
         )
@@ -51,7 +51,7 @@ class TestesBaseDados {
     private fun getLivroBaseDados(tabela: TabelaLivros, id: Long): Livro {
         val cursor = tabela.query(
             TabelaLivros.TODAS_COLUNAS,
-            "${BaseColumns._ID}=?",
+            "${TabelaLivros.NOME_TABELA}.${BaseColumns._ID}=?",
             arrayOf(id.toString()),
             null, null, null
         )
